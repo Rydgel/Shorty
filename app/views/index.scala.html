@@ -1,0 +1,71 @@
+@(urls: List[Url], detail: Boolean = false)(implicit flash: Flash)
+
+@main {
+
+    <div class="page-header">
+        <h1>Shitty URL shorter</h1>
+    </div>
+
+    @if(flash.get("error") != None) {
+        <br>
+        <div class="alert alert-danger" role="alert">@flash.get("error")</div>
+    }
+
+    @if(flash.get("success") != None) {
+        <br>
+        <div class="alert alert-success" role="alert">@flash.get("success")</div>
+    }
+
+    @if(!detail) {
+    <div class="page-header">
+        <h2>Create link</h2>
+    </div>
+
+    <form action="/admin" method="post">
+        <div class="form-group">
+            <input class="form-control" type="text" name="long_url" value="" placeholder="Your long url here">
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-default">create</button>
+        </div>
+    </form>
+    } else {
+        <a href="@routes.Application.getAllUrls">return to all links</a>
+    }
+
+    <div class="page-header">
+        <h2>List of links</h2>
+    </div>
+
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Long url</th>
+                <th>Short url</th>
+                <th>hits</th>
+                <th>created</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(url <- urls) {
+                <tr>
+                    <td>@url.id</td>
+                    <td><a href="@url.longUrl" target="_blank">@url.longUrl</a></td>
+                    <td><a href="/@url.code">@url.code</a></td>
+                    <td>@url.hits</td>
+                    <td>@("%1$tH:%1$tM:%1$tS.%1$tL %1$tY.%1$tm.%1$td".format(url.created * 1000))</td>
+                    <td>
+                        <form action="/admin/@url.id/delete" method="post">
+                            <button type="submit" class="btn btn-default">delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}

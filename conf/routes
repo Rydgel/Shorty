@@ -1,0 +1,14 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET           /                    controllers.Application.index
+GET           /admin               controllers.Application.getAllUrls
+POST          /admin               controllers.Application.createUrl
+GET           /admin/:id           controllers.Application.getUrl(id: java.util.UUID)
+POST          /admin/:id/delete    controllers.Application.deleteUrl(id: java.util.UUID)
+GET           /:code               controllers.Application.getRedirectWithCode(code: String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET           /assets/*file        controllers.Assets.at(path="/public", file)
