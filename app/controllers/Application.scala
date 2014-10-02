@@ -14,7 +14,7 @@ import models.Url
 object Application extends Controller {
 
   private val urlRegex = """^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$""".r
-  private val isValidUrl: String => Boolean = { case s: String => urlRegex.unapplySeq(s).isDefined }
+  private val isValidUrl: String => Boolean = s => urlRegex.unapplySeq(s).isDefined
   private val urlForm = Form(
     single("long_url" -> text).verifying("is a valid URL", isValidUrl)
   )
